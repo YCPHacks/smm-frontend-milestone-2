@@ -1,0 +1,51 @@
+extends ../../layouts/layout.pug 
+
+block content
+    div.d-grid.gap-3.d-md-flex
+        .h2 Create New Scheduled Message
+    form#createMessage()
+        .form-group 
+            label(for='id') ID 
+            input.form-control(type='text' name='id' id='id' placeholder='Enter ID', required)
+        .form-group
+            label(for='content') Message
+            input.form-control(type='text' name='content' id='content' placeholder='Enter message content', required)
+        .form-group
+            label(for='date') Date
+            input.form-control(type='date' name='date' id='date' placeholder='Enter date', required)
+        .form-group
+            label(for='hour') Hour
+            input.form-control(type='number' name='hour' id='hour' placeholder='Enter hour from 0 to 23' min = '0' max = '23' step = '1', required)
+        .form-group
+            label(for='minute') Minute
+            input.form-control(type='number' name='minute' id='minute' placeholder='Enter minute in increments of 15' min = '0' max = '45' step = '15', required)
+        button.btn.btn-primary(type='submit') Submit
+    script. 
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('createMessage').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var id = document.getElementById('id').value;
+                var content = document.getElementById('content').value;
+                var date = document.getElementById('date').value;
+                var hour = document.getElementById('hour').value;
+                var minute = document.getElementById('minute').value;
+                fetch('/create-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: id, message: `{"content": "${content}"}`, date: date, hour: hour, minute: minute}),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    // This gives a syntax error everytime a message is created
+                })
+                .finally(() => {
+                    window.location.href = "/message-list";
+                });
+            })
+        })

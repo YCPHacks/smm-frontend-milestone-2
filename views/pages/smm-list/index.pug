@@ -1,0 +1,20 @@
+extends ../../layouts/layout.pug 
+
+block content
+    div.d-grid.gap-3.d-md-flex
+        .h2 All Scheduled Messages
+        a.btn.btn-success.mr-2(href='/create-message', role='button') Create New Message
+    table.table.table-striped.table-bordered
+        thead
+            tr
+                th(scope='col') Message
+                th(scope='col') Hour
+                th(scope='col') Minute
+                th(scope='col') Date
+        tbody
+            each message of data
+                tr
+                    td= message[1].content
+                    td= message[3]
+                    td= message[4]
+                    td= message[2]
