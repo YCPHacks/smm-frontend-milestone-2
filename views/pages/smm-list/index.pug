@@ -18,3 +18,47 @@ block content
                     td= message[3]
                     td= message[4]
                     td= message[2]
+                    td
+                        //button.btn.btn-primary(type='button') Edit
+                        //The correspodning message is stored as the id for each delete button
+                        button.btn.btn-danger(type='button', onclick='showDeleteModal(this)', id=message[0]) Delete
+
+block modalContent
+    #deleteModal.modal.fade(tabindex='-1', aria-labelledby='deleteModalLabel', aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#removeConfirmationModalLabel.modal-title Are you sure you want to remove this item?
+                    button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') &times;
+                .modal-body
+                    input(type='hidden', id='messageToDelete')
+                    p This action cannot be undone.
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
+                    button.btn.btn-danger(type='button', onclick='confirmDelete()') Delete
+block scripts
+    script.
+        function showDeleteModal(button) {
+            document.getElementById('messageToDelete').value = button.id;
+
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'), {});
+            deleteModal.show();
+        }
+
+        function confirmDelete() {
+            var messageID = document.getElementById('messageToDelete').value;
+            console.log(messageID);
+
+            var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+            deleteModal.hide();
+
+            fetch('/message-list/' + messageID, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).finally(() => {
+                window.location.reload();
+            });
+        }
