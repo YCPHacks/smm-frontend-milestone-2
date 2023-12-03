@@ -20,6 +20,9 @@ block content
             label(for='minute') Minute
             input.form-control(type='number' name='minute' id='minute' placeholder='Enter minute in increments of 15' min = '0' max = '45' step = '15', required)
         button.btn.btn-primary(type='submit') Submit
+
+    //The below code is used to post the message to the API.
+    //This code should be moved to a separate file under /utils/
     script. 
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('createMessage').addEventListener('submit', function(e) {
