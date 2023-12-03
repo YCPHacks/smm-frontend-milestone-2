@@ -9,5 +9,11 @@ module.exports = fp(async function (fastify, opts) {
       pug: require('pug'),
     },
     root: path.join(__dirname, '../views'),
+    defaultContext: {
+      navLinks: {
+        legacy_hms: process.env.LEGACY_HARDWARE_MANAGEMENT_URL,
+        mvp: process.env.MVP_URL,
+      }
+    }
   })
 })
